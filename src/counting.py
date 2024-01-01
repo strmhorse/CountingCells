@@ -8,26 +8,26 @@
 
 from argparse import ArgumentParser
 
-from sys import argv as sysargv
+from sys import argv as sysargv, exit as sysexit
 from os import getenv
 
 import logging
+import pprint
+
+from utils import isBlank, setupLogging
 
 from counting_errors import InvalidCountingArgument
+
+
+
 
 def main(height=1, width=1, steps=1, filename=None, autogenerate=False, points=None, verbocity=0, dryrun=False):
     """
     """
 #    cell_obj = generate_cells(filename, autogenerate, points, verbose, dry-run)
-    setup_logging(verbocity)
+#    setupLogging(verbocity)
     return True
 
-def setup_logging(verbocity):
-    base_loglevel = getattr(logging, (getenv('LOGLEVEL', 'WARNING')).upper())
-    verbocity = min(verbocity, 2)
-    loglevel = base_loglevel - (verbocity * 10)
-    logging.basicConfig(level=loglevel,
-                        format='%(message)s')
 
 def validate_args(**inargs):
     """
@@ -43,6 +43,8 @@ def validate_args(**inargs):
                 argname="width",
                 argvalue=inargs["width"],
                 message="Need a Width defined as greater than 0")
+#    if isBlank(inargs["filename"]):
+#        logging.debug("File is blank")
 #    if (not(inargs["filename"]) and not(inargs["autogenerate"])):
 #        return False
     if (inargs["steps"] <= 0):
@@ -50,6 +52,16 @@ def validate_args(**inargs):
                 argname="steps",
                 argvalue=inargs["steps"],
                 message="Need a Step Count defined as greater than 1")
+    if inargs["verbocity"]:
+        print("\n\n\nVerbose Output of command line arguments:")
+        pp = pprint.PrettyPrinter(indent=4)
+        pp.pprint(inargs)
+        print("\n\n")
+
+    if inargs["dryrun"]:
+        print("Dry Run, exiting...\n\n")
+        sysexit(0)
+
     return inargs
 
 def parse_args(*args, **kwargs):
@@ -58,18 +70,12 @@ def parse_args(*args, **kwargs):
     parser = ArgumentParser(
             prog="Counting",
             description="A CLI function to count the number of cells within a given distance of positive cells",
-            epilog="")
+            epilog="\n\n\n")
 
-    parser.add_argument('-f', '--filename',
-            help="Name of the file that contains the stored cells")
-    parser.add_argument('-a', '--autogenerate',
-            help="Auto-generate a random array",
-            default=False,
-            action='store_true')
-    parser.add_argument('-p', '--point',
-            dest='points',
-            help="Input a value directly; format is triple floats as (Y, X, Value)",
-            action='append')
+    parser.set_defaults(
+            filename=None,
+            verbocity=0
+            )
 
     parser.add_argument('-H', '--height',
             type=float,
@@ -84,22 +90,40 @@ def parse_args(*args, **kwargs):
             help="Number of steps distant from positive values to count [DEFAULT=1]",
             default=1)
 
-    parser.add_argument('-v', '--verbose',
+    source_group = parser.add_argument_group(
+            title="Source Group",
+            description="Where are the cell values coming from?")
+    source_group.add_argument('-f', '--filename',
+            help="Name of the file that contains the stored cells",
+            default=None)
+    source_group.add_argument('-a', '--autogenerate',
+            help="Auto-generate a random array [DEFAULT=False]",
+            default=False,
+            action='store_true')
+    source_group.add_argument('-p', '--point',
+            dest='points',
+            help="(option) Input a value directly; format is triple floats as (Y, X, Value)",
+            action='append')
+
+
+    helper_group = parser.add_argument_group(title='helpers',
+            description="These are helper functions, not related to the main system operation.")
+    helper_group.add_argument('-D', '--dryrun',
+            default=False,
+            help="(option) Perform pre-flight operations, then quit before doing anything. [DEFAULT=False]",
+            action='store_true')
+    verb_group = helper_group.add_mutually_exclusive_group(required=False)
+    verb_group.add_argument('-v', '--verbose',
             help="(option) Output debug statements and verbose responses.  Repeat for increased verbocity.",
             dest='verbocity',
             default=0,
             action='count')
-    parser.add_argument('-q', '--quiet',
-            help="(option) Quiet, no verbosity, no unnecessary debug",
+    verb_group.add_argument('-q', '--quiet',
+            help="(option) Quiet, no verbocity, no unnecessary debug",
             action='store_const',
             const=-1,
             default=0,
             dest='verbocity')
-
-    parser.add_argument('-D', '--dryrun',
-            default=False,
-            help="(option) Perform pre-flight operations, then quit before doing anything. [DEFAULT=False]",
-            action='store_true')
 
     out_args = parser.parse_args(*args, **kwargs)
     out_vars = vars(out_args)
@@ -108,7 +132,7 @@ def parse_args(*args, **kwargs):
 
 if __name__ == "__main__":
 #    main(validate_args(*parse_args(**sysargv[1:])))
-    in_args = parse_args(*sysargv[1:])
+    in_args = parse_args(sysargv[1:])
     valid_args = validate_args(**in_args)
     main(**valid_args)
 
