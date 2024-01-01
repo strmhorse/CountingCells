@@ -5,6 +5,12 @@
 #  CLI interface for counting library
 #
 #
+"""
+counting.py
+
+The CLI wrapper for the counting project.
+
+"""
 
 from argparse import ArgumentParser
 
@@ -14,31 +20,35 @@ from os import getenv
 import logging
 import pprint
 
-from utils import isBlank, setupLogging
+import src.utils as counting_utils
+#from ..utils import isBlank, setupLogging
+#from utils import isBlank, setupLogging
 
-from counting_errors import InvalidCountingArgument
+from src.counting_errors import InvalidCountingArgument
 
 
 
-
-def main(height=1, width=1, steps=1, filename=None, autogenerate=False, points=None, verbocity=0, dryrun=False):
+def main(height=1, width=1, steps=1,
+        filename=None, autogenerate=False, points=None,
+        verbocity=0, dryrun=False):
     """
+    Main runner for the counting functions
     """
 #    cell_obj = generate_cells(filename, autogenerate, points, verbose, dry-run)
 #    setupLogging(verbocity)
     return True
 
 
-def validateArgs(**inargs):
+def validate_args(**inargs):
     """
     Test and validate incoming arguments
     """
-    if (inargs["height"] <= 0):
+    if inargs["height"] <= 0:
         raise InvalidCountingArgument(
                 argname="height",
                 argvalue=inargs["height"],
                 message="Need a Height defined as greater than 0")
-    if (inargs["width"] <= 0):
+    if inargs["width"] <= 0:
         raise InvalidCountingArgument(
                 argname="width",
                 argvalue=inargs["width"],
@@ -47,7 +57,7 @@ def validateArgs(**inargs):
 #        logging.debug("File is blank")
 #    if (not(inargs["filename"]) and not(inargs["autogenerate"])):
 #        return False
-    if (inargs["steps"] <= 0):
+    if inargs["steps"] <= 0:
         raise InvalidCountingArgument(
                 argname="steps",
                 argvalue=inargs["steps"],
@@ -64,12 +74,14 @@ def validateArgs(**inargs):
 
     return inargs
 
-def parseArgs(*args, **kwargs):
+def parse_args(*args, **kwargs):
     """
+    Parses incoming arguments into usable variables.
     """
     parser = ArgumentParser(
             prog="Counting",
-            description="A CLI function to count the number of cells within a given distance of positive cells",
+            description="A CLI function to count the number of cells within "
+                        "a given distance of positive cells",
             epilog="\n\n\n")
 
     parser.set_defaults(
@@ -110,11 +122,13 @@ def parseArgs(*args, **kwargs):
             description="These are helper functions, not related to the main system operation.")
     helper_group.add_argument('-D', '--dryrun',
             default=False,
-            help="(option) Perform pre-flight operations, then quit before doing anything. [DEFAULT=False]",
+            help="(option) Perform pre-flight operations, then quit before "
+                 "doing anything. [DEFAULT=False]",
             action='store_true')
     verb_group = helper_group.add_mutually_exclusive_group(required=False)
     verb_group.add_argument('-v', '--verbose',
-            help="(option) Output debug statements and verbose responses.  Repeat for increased verbocity.",
+            help="(option) Output debug statements and verbose responses.  "
+                 "Repeat for increased verbocity.",
             dest='verbocity',
             default=0,
             action='count')
@@ -132,10 +146,6 @@ def parseArgs(*args, **kwargs):
 
 if __name__ == "__main__":
 #    main(validate_args(*parse_args(**sysargv[1:])))
-    in_args = parseArgs(sysargv[1:])
-    valid_args = validateArgs(**in_args)
+    in_args = parse_args(sysargv[1:])
+    valid_args = validate_args(**in_args)
     main(**valid_args)
-
-
-
-
