@@ -1,4 +1,5 @@
 # vim partial files
+*.swp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
