@@ -11,10 +11,10 @@ class InvalidCountingArgument(Exception):
         message -- More details about what's wrong
     """
     
-    def __init__(self, argname, argvalue, message):
+    def __init__(self, argname, argvalue, minvalue=0):
         self.argname = argname
         self.argvalue = argvalue
-        self.message = message
+        self.message = f"Need a {argname} greater than {minvalue}, you gave {argvalue}."
         super().__init__(self.message)
 
 

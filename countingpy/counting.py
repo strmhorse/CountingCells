@@ -12,6 +12,8 @@ The CLI wrapper for the counting project.
 
 """
 
+#__package__ = "countingpy"
+
 from argparse import ArgumentParser
 
 from sys import argv as sysargv, exit as sysexit
@@ -29,10 +31,8 @@ from counting_errors import InvalidCountingArgument
 #from countingpy.counting_errors import InvalidCountingArgument
 
 
-
 def main(height=1, width=1, steps=1,
-        filename=None, autogenerate=False, points=None,
-        verbocity=0, dryrun=False):
+        filename=None, verbocity=0):
     """
     Main runner for the counting functions
     """
@@ -46,24 +46,15 @@ def validate_args(**inargs):
     Test and validate incoming arguments
     """
     if inargs["height"] <= 0:
-        raise InvalidCountingArgument(
-                argname="height",
-                argvalue=inargs["height"],
-                message="Need a Height defined as greater than 0")
+        raise InvalidCountingArgument("height", inargs["height"])
     if inargs["width"] <= 0:
-        raise InvalidCountingArgument(
-                argname="width",
-                argvalue=inargs["width"],
-                message="Need a Width defined as greater than 0")
+        raise InvalidCountingArgument("width", inargs["width"])
 #    if isBlank(inargs["filename"]):
 #        logging.debug("File is blank")
 #    if (not(inargs["filename"]) and not(inargs["autogenerate"])):
 #        return False
     if inargs["steps"] <= 0:
-        raise InvalidCountingArgument(
-                argname="steps",
-                argvalue=inargs["steps"],
-                message="Need a Step Count defined as greater than 1")
+        raise InvalidCountingArgument("step", inargs["steps"])
     if inargs["verbocity"]:
         print("\n\n\nVerbose Output of command line arguments:")
         pp = pprint.PrettyPrinter(indent=4)
