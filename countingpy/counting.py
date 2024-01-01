@@ -20,11 +20,13 @@ from os import getenv
 import logging
 import pprint
 
-import countingpy.utils as counting_utils
+import utils as counting_utils
+#import countingpy.utils as counting_utils
 #from ..utils import isBlank, setupLogging
 #from utils import isBlank, setupLogging
 
-from countingpy.counting_errors import InvalidCountingArgument
+from counting_errors import InvalidCountingArgument
+#from countingpy.counting_errors import InvalidCountingArgument
 
 
 

@@ -1,4 +1,7 @@
+# countingpy/__init__.py
 
+from countingpy.utils import *
+from countingpy.counting_errors import *
 
 def isBlank(inStr):
     """
