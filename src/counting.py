@@ -29,7 +29,7 @@ def main(height=1, width=1, steps=1, filename=None, autogenerate=False, points=N
     return True
 
 
-def validate_args(**inargs):
+def validateArgs(**inargs):
     """
     Test and validate incoming arguments
     """
@@ -64,7 +64,7 @@ def validate_args(**inargs):
 
     return inargs
 
-def parse_args(*args, **kwargs):
+def parseArgs(*args, **kwargs):
     """
     """
     parser = ArgumentParser(
@@ -132,8 +132,8 @@ def parse_args(*args, **kwargs):
 
 if __name__ == "__main__":
 #    main(validate_args(*parse_args(**sysargv[1:])))
-    in_args = parse_args(sysargv[1:])
-    valid_args = validate_args(**in_args)
+    in_args = parseArgs(sysargv[1:])
+    valid_args = validateArgs(**in_args)
     main(**valid_args)
 
 
