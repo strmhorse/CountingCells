@@ -26,8 +26,17 @@ class InvalidIndexException(Exception):
         self.in_width = in_width
         self.obj_height = obj_height
         self.obj_width = obj_width
-        self.message = f"Your index ({in_height}, {in_width}) exceeded the "
-                        "maximum value of ({obj_height}, {obj_width})."
+        self.message = f"Your index ({in_height}, {in_width}) exceeded the maximum value of ({obj_height}, {obj_width})."
+        super().__init__(self.message)
+
+
+class InvalidValueException(Exception):
+    """
+    Raised when a given point is beyond the maximum area values.
+    """
+    def __init__(self, in_value):
+        self.in_value = in_value
+        self.message = f"Your value setting of {in_value} of type {type(in_value)} was invalid."
         super().__init__(self.message)
 
 
