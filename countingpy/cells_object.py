@@ -40,6 +40,32 @@ class CellsObject:
         self._default_value = default_value
         #self._values = defaultdict(constant_factory(0))
         self._values = values or {}
+        self._positives = {}
+        self.generate_positives()
+        self.generate_maximums()
+
+    def generate_maximums(self):
+        """
+        Re-sets the maximums from the incoming values array
+        """
+        changed = False
+        for ((y, x)) in self._values.keys():
+            if y > self._height:
+                self._height = y
+                changed = True
+            if x > self._width:
+                self._width = x
+                changed = True
+        if changed:
+            print(f"Values are now:  {self._height}, {self._width}")
+
+    def generate_positives(self):
+        """
+        Initialize the positives array
+        """
+        for ((y, x), val) in self._values.items():
+            if val > 0:
+                self._positives[Point(y, x)] = val
 
     def validate_index(self, height, width):
         """
@@ -112,8 +138,8 @@ class CellsObject:
         """
         self.validate_index(in_height, in_width)
         self.validate_value(in_value)
-        index = Point(in_height, in_width)
-        self._values[index] = in_value
+        self._values[Point(in_height, in_width)] = in_value
+        self.set_positive(in_height, in_width, in_value)
 
     def del_point(self, in_height, in_width):
         """
@@ -121,5 +147,53 @@ class CellsObject:
         Raises an exception if the index is invalid.
         """
         self.validate_index(in_height, in_width)
-        self._values.pop([Point(in_height, in_width)], None)
+        try:
+            self._values.pop([Point(in_height, in_width)], None)
+        except KeyError:
+            pass
+        self.del_positive(in_height, in_width)
+
+    def get_positive(self, out_height, out_width):
+        """
+        Gets the value of any point in the array.
+        Returns the default value if no value has been set.
+        Raises an exception if the index is invalid.
+        """
+        self.validate_index(out_height, out_width)
+        try:
+            return self._positives[Point(out_height, out_width)]
+        except KeyError:
+            return False
+
+    def set_positive(self, in_height, in_width, in_value):
+        """
+        Sets the point value in the array.
+        Raises an exception if either the index or value are invalid.
+        """
+        self.validate_index(in_height, in_width)
+        if in_value > 0:
+            self._positives[Point(in_height, in_width)] = True
+
+    def del_positive(self, in_height, in_width):
+        """
+        Gets the value of any point in the array
+        Raises an exception if the index is invalid.
+        """
+        self.validate_index(in_height, in_width)
+        try:
+            self._positives.pop([Point(in_height, in_width)], None)
+        except KeyError:
+            pass
+
+    def distance(self, y1=0, x1=0, y2=0, x2=0, p1=None, p2=None):
+        """
+        This is the implementation of the Manhattan Distance formula
+        """
+        p1 = p1 or Point(y1, x1)
+        p2 = p2 or Point(y2, x2)
+        self.validate_index(p1.y, p1.x)
+        self.validate_index(p2.y, p2.x)
+        d = abs(p1.y - p2.y) + abs(p1.x - p2.x)
+        return d
+
 #
