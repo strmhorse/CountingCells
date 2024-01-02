@@ -56,8 +56,8 @@ class CellsObject:
             if x > self._width:
                 self._width = x
                 changed = True
-        if changed:
-            print(f"Values are now:  {self._height}, {self._width}")
+#        if changed:
+#            print(f"Values are now:  {self._height}, {self._width}")
 
     def generate_positives(self):
         """
@@ -195,5 +195,23 @@ class CellsObject:
         self.validate_index(p2.y, p2.x)
         d = abs(p1.y - p2.y) + abs(p1.x - p2.x)
         return d
+
+    def neighborhood_of_positives(self, steps=1):
+        """
+        Find how many cells are in the neighborhood of positive integers
+        """
+        found_list = []
+        for point_index_v in self._values.keys():
+            for point_index_p in self._positives.keys():
+                if self.distance(p1=point_index_v, p2=point_index_p) < steps:
+                    found_list.append(point_index_v)
+        found_set = set(found_list)
+        return found_set
+
+
+
+
+
+
 
 #

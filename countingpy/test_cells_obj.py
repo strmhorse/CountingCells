@@ -184,6 +184,46 @@ class TestCellsObject(unittest.TestCase):
         co13 = CellsObject(values=in_dict_1)
         self.assertEqual(co13._positives, positives_1)
 
+    def test_distance_1(self):
+        """
+        Test the distance functions
+        """
+        co14 = CellsObject(values=in_dict_2)
+        self.assertEqual(co14.distance(1,1,1,1), 0)
+        self.assertEqual(co14.distance(2,1,1,1), 1)
+        self.assertEqual(co14.distance(1,2,1,1), 1)
+        self.assertEqual(co14.distance(1,1,2,1), 1)
+        self.assertEqual(co14.distance(1,1,1,2), 1)
+        self.assertEqual(co14.distance(1,1,9,9), 16)
+        self.assertEqual(co14.distance(9,9,1,1), 16)
+        self.assertEqual(co14.distance(9,1,1,9), 16)
+        self.assertEqual(co14.distance(1,9,9,1), 16)
+
+    def test_distance_2(self):
+        """
+        Test the distance functions
+        """
+        co14 = CellsObject(values=in_dict_2)
+        self.assertEqual(co14.distance(p1=Point(1,1),p2=Point(1,1)), 0)
+        self.assertEqual(co14.distance(p1=Point(2,1),p2=Point(1,1)), 1)
+        self.assertEqual(co14.distance(p1=Point(1,2),p2=Point(1,1)), 1)
+        self.assertEqual(co14.distance(p1=Point(1,1),p2=Point(2,1)), 1)
+        self.assertEqual(co14.distance(p1=Point(1,1),p2=Point(1,2)), 1)
+        self.assertEqual(co14.distance(p1=Point(1,1),p2=Point(9,9)), 16)
+        self.assertEqual(co14.distance(p1=Point(9,9),p2=Point(1,1)), 16)
+        self.assertEqual(co14.distance(p1=Point(9,1),p2=Point(1,9)), 16)
+        self.assertEqual(co14.distance(p1=Point(1,9),p2=Point(9,1)), 16)
+
+    def test_neighborhood_1(self):
+        """
+        Test the neighborhood function
+        """
+        co15 = CellsObject(values=in_dict_1)
+        p_val_1 = co15.neighborhood_of_positives(1)
+        self.assertEqual(p_val_1, positives_1.keys())
+        p_val_2 = co15.neighborhood_of_positives(2)
+        self.assertEqual(p_val_2, positives_1.keys())
+
 
 
 
@@ -191,7 +231,6 @@ class TestCellsObject(unittest.TestCase):
 # Test Del
 # Test Positives
 # Test Distance
-
 
 in_dict_1 = {
     Point(1,1): 0,
@@ -208,6 +247,16 @@ in_dict_1 = {
 positives_1 = {
     Point(1,2): 2,
     Point(1,3): 4,
+    Point(3,3): 5
+}
+
+positives_2 = {
+    Point(1,1): 0,
+    Point(1,2): 2,
+    Point(1,3): 4,
+    Point(2,1): -2,
+    Point(2,3): -6,
+    Point(3,2): -3,
     Point(3,3): 5
 }
 
