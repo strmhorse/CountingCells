@@ -24,15 +24,16 @@ import utils as counting_utils
 from counting_errors import InvalidCountingArgument
 #from countingpy.counting_errors import InvalidCountingArgument
 
+from generate_cells import generate_cells_obj
 
-def main(height=1, width=1, steps=1,
-        filename=None, verbocity=0):
+
+def main(filename=None, steps=0, verbocity=0, **kwargs):
     """
     Main runner for the counting functions
     """
-#    cell_obj = generate_cells(filename, autogenerate, points, verbose, dry-run)
+    cell_obj = generate_cells_obj(filename=filename)
+    return cell_obj.count(steps)
 #    setupLogging(verbocity)
-    return True
 
 
 def validate_args(**inargs):
@@ -135,4 +136,5 @@ if __name__ == "__main__":
 #    main(validate_args(*parse_args(**sysargv[1:])))
     in_args = parse_args(sysargv[1:])
     valid_args = validate_args(**in_args)
-    main(**valid_args)
+    cval = main(**valid_args)
+    print(f"\n\n\nCount is {cval}")

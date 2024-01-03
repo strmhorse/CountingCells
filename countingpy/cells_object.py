@@ -29,7 +29,7 @@ class CellsObject:
     Object to hold and return the value of cells in an array
     """
 
-    def __init__(self, height=1, width=1, values=None, default_value=0):
+    def __init__(self, height=1, width=1, values=None, default_value=0, verbocity=0):
         """
         Create the default values dictionary.
         It uses the constant_factory to return 0 for any non-set value
@@ -38,6 +38,7 @@ class CellsObject:
         self._height = height
         self._width = width
         self._default_value = default_value
+        self._verbocity = verbocity
         #self._values = defaultdict(constant_factory(0))
         self._values = values or {}
         self._positives = {}
@@ -55,7 +56,7 @@ class CellsObject:
         if x > self._width:
             self._width = x
             changed = True
-        if changed:
+        if changed and self._verbocity:
             print(f"Maximum Indexes are now:  {self._height}, {self._width}")
 
     def generate_maximums(self):
@@ -212,12 +213,19 @@ class CellsObject:
         found_list = []
         for point_index_v in self._values.keys():
             for point_index_p in self._positives.keys():
-                if self.distance(p1=point_index_v, p2=point_index_p) < steps:
+                if self.distance(p1=point_index_v, p2=point_index_p) <= steps:
                     found_list.append(point_index_v)
         found_set = set(found_list)
         return found_set
 
-
+    def count(self, steps=1):
+        """
+        Return the count for the number of unique cells within steps of positives
+        """
+        countval = len(self.neighborhood_of_positives(steps))
+        if self._verbocity:
+            print(f"Count Value is {countval}\n\n")
+        return countval
 
 
 
