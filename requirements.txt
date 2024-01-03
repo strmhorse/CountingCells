@@ -1,0 +1,134 @@
+Requirements:
+1.  Array
+1a.  2d array
+1b.  Positive indecies, >0
+1c.  Cells contain numbers, positive, negative and zero
+
+UNSPOKEN ASSUMPTIONS:
+Positive value in cell means any value greater than zero.
+Indicies (height, width) all start at 1
+Distance must be positive
+Distance can be non-integer
+
+2. Coordinates
+2a.  Coordinates are in (y,x) format
+y as height H
+x as width W
+1c.  Coordinates do not wrap
+
+2.  Distance
+2a.  Distance N
+2b.  N>= 0
+2c.  Manhattan Distance:  |y2-y1| + |x2 - x1|
+
+3.  Function: Return the number of cells that fall within N steps of any positive values in the array.
+3b.  Each cell counted exactly once
+3c.  The cell itself is counted if it is positive
+
+
+Input:
+* Array Dimentions (?)
+* Array values
+* Number of steps
+
+Output:
+* Number of cells (Integer)
+* (optional) confirmation of steps parameter
+* (optional) array of cells positive, array of cells negative
+* Failure Modes and Messages
+
+Possible Modes:
+Call-able library function
+Pros:
+- Directly importable into existing code
+- Easily call-able, reusable, wrap and re-deploy
+- Easy to modify, manipulate
+Cons:
+- Dependent upon the environment, language versions, etc.
+- Easy to modify, manipulate
+- Python:  Parallelism and multiprocessing issues due to GIL
+
+Call-able Script
+Pros:
+- As library function, but with CLI interactions
+- Can use host-based or other external parallelism
+Cons:
+- As above, but with greater complexity from CLI testing
+
+
+
+
+Container with REST endpoints
+Container with SOAP endpoints
+Container with GraphQL endpoints
+Pros:
+- Immutable black box (within limits) for greater security
+- Can be deployed and interact as needed, wherever.
+- Can be ATO'd and testable beforehand
+- Idempotent:  Can be re-deployed as needed, stateless (within parameters)
+Cons:
+- Requires network connections and setup
+- Not modifiable
+- Harder to debug in operation
+- Stateless:  Anything to be preserved must be exported / offlined / elsewhere
+- Requires additional Auth/Auth work, degrees of complexity
+- Requires additional work to integrate with GPUs
+- Needs additional management for memory
+
+
+Container with no endpoints
+Requires mounting host directories to operate
+
+Pros:
+- Super-secure black box
+- Requires file-based input
+- Can run debug (with parameters)
+Cons:
+- Requires operable host environment that can mount directories
+- Requires host operator that knows how to run it
+- Not modifiable
+
+
+
+Tests:
+
+1*1 array
+
+1*2 array
+2*1 array
+2*2 array
+
+3*1 array
+3*2 array
+3*3 array
+1*3 array
+2*3 array
+
+1*x array
+x*1 array
+x*x array
+
+
+1*x array, N>x
+x*1 array, N>x
+
+x*y array, N<x, N<y
+
+x*y array, N>x, N<y
+x*y array, N<x, N>y
+x*y array, N>x, N>y
+
+y*x array, N<x, N<y
+
+y*x array, N>x, N<y
+y*x array, N<x, N>y
+y*x array, N>x, N>y
+
+
+All the above, with:
+2 positive, not overlapping
+2 positive, overlapping
+3 positive, not overlapping
+3 positive, 2 overlapping
+3 positive, 3 overlapping
+n positive
