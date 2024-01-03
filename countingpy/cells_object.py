@@ -44,18 +44,26 @@ class CellsObject:
         self.generate_positives()
         self.generate_maximums()
 
+    def reset_maximums(self, y, x):
+        """
+        Re-sets the maximums from a given indexes
+        """
+        changed = False
+        if y > self._height:
+            self.height = y
+            changed = True
+        if x > self._width:
+            self._width = x
+            changed = True
+        if changed:
+            print(f"Maximum Indexes are now:  {self._height}, {self._width}")
+
     def generate_maximums(self):
         """
         Re-sets the maximums from the incoming values array
         """
-        changed = False
         for ((y, x)) in self._values.keys():
-            if y > self._height:
-                self._height = y
-                changed = True
-            if x > self._width:
-                self._width = x
-                changed = True
+            self.reset_maximums(y, x)
 #        if changed:
 #            print(f"Values are now:  {self._height}, {self._width}")
 
@@ -136,7 +144,8 @@ class CellsObject:
         Sets the point value in the array.
         Raises an exception if either the index or value are invalid.
         """
-        self.validate_index(in_height, in_width)
+#        self.validate_index(in_height, in_width)
+        self.reset_maximums(in_height, in_width)
         self.validate_value(in_value)
         self._values[Point(in_height, in_width)] = in_value
         self.set_positive(in_height, in_width, in_value)

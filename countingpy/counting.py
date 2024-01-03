@@ -1,10 +1,4 @@
 #!/usr/bin/python3
-#
-#  counting.py
-#
-#  CLI interface for counting library
-#
-#
 """
 counting.py
 
