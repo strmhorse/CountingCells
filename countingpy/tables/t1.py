@@ -71,4 +71,24 @@ df10[4][8] = 1
 df10[6][7] = 1
 df10.to_csv("example4.csv")
 
+df11 = pd.DataFrame(
+            np.zeros((11,11)),
+            columns=np.arange(1,12),
+            index=np.arange(1,12),
+            dtype=int)
+df11[1][1] = 1
+df11[1][2] = 1
+df11.to_csv("example5.csv")
+
+df12 = pd.DataFrame(
+            np.zeros((11,11)),
+            columns=np.arange(1,12),
+            index=np.arange(1,12),
+            dtype=int)
+df12[1][1] = 1
+df12[1][11] = 1
+df12[11][1] = 1
+df12[11][11] = 1
+df12.to_csv("example6.csv")
+
 

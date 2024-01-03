@@ -62,7 +62,7 @@ class TestValidateArguments(unittest.TestCase):
         Boundry testing for step > 0
         """
         bad_input_dict = testDictGood.copy()
-        bad_input_dict["steps"] = 0
+        bad_input_dict["steps"] = -0.1
         with self.assertRaises(InvalidCountingArgument):
             validate_args(**bad_input_dict)
         bad_input_dict["steps"] = -1

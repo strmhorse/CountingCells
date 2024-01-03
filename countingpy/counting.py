@@ -48,7 +48,7 @@ def validate_args(**inargs):
 #        logging.debug("File is blank")
 #    if (not(inargs["filename"]) and not(inargs["autogenerate"])):
 #        return False
-    if inargs["steps"] <= 0:
+    if inargs["steps"] < 0:
         raise InvalidCountingArgument("step", inargs["steps"])
     if inargs["verbocity"]:
         print("\n\n\nVerbose Output of command line arguments:")
